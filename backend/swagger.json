@@ -1,0 +1,203 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "3.0.0",
+        "title": "API CRUD BLIZZARD",
+        "description": "Une API qui permet d'ajouter une liste de personnage de World of Warcraft"
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "La formation",
+            "description": "Une API pour apprendre nodeJS"
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+            "description": "Entrez le token avec le préfixe 'Bearer:' e.g. : Bearer abcd"
+        }
+    },
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/api": {
+            "get": {
+                "tags": [
+                    "Character"
+                ],
+                "summary": "Liste tous les personnages",
+                "responses": {
+                    "200": {
+                        "description": "Retourne une liste de Character",
+                        "schema": {
+                            "$ref": "#/definitions/Character"
+                        }
+                    },
+                    "400": {
+                        "description": "Erreur retournée par l'API"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Character"
+                ],
+                "summary": "Créer un personnage",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "character",
+                        "in": "body",
+                        "description": "Nouveau personnage à créer. A mettre dans une clef \"Character\"",
+                        "schema": {
+                            "$ref": "#/definitions/CharacterWithoutUserId"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Personnage enregistré !"
+                    },
+                    "400": {
+                        "description": "Erreur retournée par l'API."
+                    },
+                    "401": {
+                        "description": "Utilisateur non autorisé."
+                    }
+                }
+            }
+        },
+        "/api/{pseudo}/{class}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID du personnage",
+                    "type": "string"
+                }
+            ],
+            "put": {
+                "tags": [
+                    "Character"
+                ],
+                "summary": "Met à jour un personnage",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "character",
+                        "in": "body",
+                        "description": "Personnage à mettre à jour. A mettre dans une clef \"Character\"",
+                        "schema": {
+                            "$ref": "#/definitions/Character"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Personnage modifié !",
+                        "schema": {
+                            "$ref": "#/definitions/Character"
+                        }
+                    },
+                    "400": {
+                        "description": "Personnage non trouvé"
+                    },
+                    "401": {
+                        "description": "Ce n'est pas l'personnage de l'utilisateur/Utilisateur non autentifié."
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Character"
+                ],
+                "summary": "Supprime un personnage",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Personnage supprimé !",
+                        "schema": {
+                            "$ref": "#/definitions/Character"
+                        }
+                    },
+                    "400": {
+                        "description": "Personnage non trouvé"
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ]
+            }
+        }
+    },
+    "definitions": {
+        "Character": {
+            "required": [
+                "pseudo",
+                "class",
+                "level",
+                "userId"
+            ],
+            "properties": {
+                "pseudo": {
+                    "type": "string"
+                },
+                "class": {
+                    "type": "string"
+                },
+                "level": {
+                    "type": "number"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "CharacterWithoutUserId": {
+            "required": [
+                "pseudo",
+                "class",
+                "level",
+                "userId"
+            ],
+            "properties": {
+                "pseudo": {
+                    "type": "string"
+                },
+                "class": {
+                    "type": "string"
+                },
+                "level": {
+                    "type": "number"
+                }
+            }
+        }
+    }
+}
