@@ -1,4 +1,5 @@
 const axios = require('axios');
+const fs = require('fs');
 const event = require('../events/creerFichier');
 
 exports.login = (req, res, next) => {
@@ -9,7 +10,8 @@ exports.login = (req, res, next) => {
         .then(response => res.status(200).json(response.data))
         .catch(() => {
 
-            event.emit('appendFichier', { fileName: 'echecConnect.txt', message: `2023-01-01 17:00:05 : tentative de connexion invalide! \n` })
+
+            event.emit('appendFichier', { fileName: 'echecConnect.txt', message: new Date().toLocaleString('fr-FR') + `tentative de connexion invalide! \n` })
 
             error => res.status(400).json({ error })
         });
